@@ -11,10 +11,6 @@ class CategoryController {
 
   async getAll(req, res, next) {
     try {
-      const dto = req.body;
-
-      validater(userSchema, dto);
-
       const resdata = await this.#categoryService.getAll();
 
       res.status(resdata.status).json(resdata);
