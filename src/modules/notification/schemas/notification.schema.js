@@ -5,6 +5,7 @@ const notificationSchema = new Schema({
   message: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User" },
   isGlobal: { type: Boolean, required: true },
+  createdAt: { type: Date, required: true },
 });
 
 const NotificationModel = model(

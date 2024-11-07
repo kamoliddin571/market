@@ -16,7 +16,22 @@ class NotificationController {
 
   async getAll(req, res, next) {
     try {
-      const resdata = await this.#notificationService.getAll();
+      let page = req.query.page;
+      let count = req.query.count;
+
+      if (!page) {
+        page = 1;
+      } else {
+        page = Number(page);
+      }
+
+      if (!count) {
+        count = 3;
+      } else {
+        count = Number(count);
+      }
+
+      const resdata = await this.#notificationService.getAll({ page, count });
 
       res.status(resdata.status).json(resdata);
     } catch (error) {
@@ -29,6 +44,8 @@ class NotificationController {
       const dto = req.body;
 
       validater(notificationSchema, dto);
+
+      dto.createdAt = new Date();
 
       if (!dto.isGlobal && !dto.userId) {
         throw new CustomError("Please provide userId or isGlobal true", 400);
