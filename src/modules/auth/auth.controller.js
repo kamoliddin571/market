@@ -59,6 +59,10 @@ class AuthController {
   }
   async login(req, res, next) {
     try {
+      console.log(req.myIo);
+
+      req.myIo.emit("login", { data: req.body });
+
       const dto = req.body;
 
       validater(loginDto, dto);

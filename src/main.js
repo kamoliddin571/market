@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { config, configDto } = require("./config/index");
-const { router } = require("./modules/module.routes");
+const { moduleRoutesFn } = require("./modules/module.routes");
 const { CustomError } = require("./lib/customError");
 const { ResData } = require("./lib/resData");
 const { mongodbConnection } = require("./lib/mongoseConnection");
@@ -34,6 +34,8 @@ const logStream = fs.createWriteStream(
 );
 
 app.use((req, res, next) => {
+  req.myIo = io;
+
   const originalSend = res.json;
 
   res.json = function (body) {
@@ -65,6 +67,8 @@ app.use(
     { stream: logStream }
   )
 );
+
+const router = moduleRoutesFn(io);
 
 app.use("/api", router);
 
